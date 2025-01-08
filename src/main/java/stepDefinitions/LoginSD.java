@@ -1,6 +1,5 @@
 package stepDefinitions;
 
-import io.cucumber.java.be.I;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -11,62 +10,83 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginSD {
+
     WebDriver driver;
 
     @Given("I am on the login page.")
-    public void loginPage(){
+    public void loginPage() {
+        // Initialize the WebDriver and open the login page
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://www.saucedemo.com/");
-        System.out.println("I am on the login page");
+        System.out.println("I am on the login page.");
     }
 
     @When("I enter correct username and password.")
-    public void I_entre_valid_username_password (){
+    public void I_enter_valid_username_password() {
+        // Enter valid username and password
         WebElement username = driver.findElement(By.xpath("//input[@id='user-name']"));
         username.sendKeys("standard_user");
         WebElement password = driver.findElement(By.xpath("//input[@id='password']"));
         password.sendKeys("secret_sauce");
-        System.out.println("I have entered correct username and password");
+        System.out.println("I have entered correct username and password.");
     }
 
-    @And("I click the login button")
-    public void I_click_login_button(){
+    @When("I enter incorrect username and password.")
+    public void i_enter_incorrect_username_and_password() {
+        // Enter invalid username and password
+        WebElement username = driver.findElement(By.xpath("//input[@id='user-name']"));
+        username.sendKeys("vishnu");
+        WebElement password = driver.findElement(By.xpath("//input[@id='password']"));
+        password.sendKeys("123test");
+        System.out.println("Incorrect username and password are entered.");
+    }
+
+    @And("I click the login button.")
+    public void I_click_login_button() {
+        // Click the login button
         WebElement loginButton = driver.findElement(By.xpath("//input[@id='login-button']"));
         loginButton.click();
-        System.out.println("I have clicked the login button");
+        System.out.println("I have clicked the login button.");
     }
 
     @Then("I should be redirected to the listing page.")
     public void I_should_be_redirected_to_the_listing_page() {
+        // Validate redirection to the listing page
         String expected = "Swag Labs";
         String actual = driver.getTitle();
-        System.out.println("Expected:" +expected);
-        System.out.println("Actual:" +actual);
-        if (expected.equals(actual)){
-            System.out.println("I have redirected to the listing page");
-        }else {
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " + actual);
+        if (expected.equals(actual)) {
+            System.out.println("I have been redirected to the listing page.");
+        } else {
+            System.out.println("I have not been redirected to the listing page.");
+        }
+    }
 
-            System.out.println("I have not redirected to the listing page");
+    @Then("I should not be redirected to the listing page.")
+    public void I_should_not_be_redirected_to_the_listing_page() {
+        // Validate the error message for invalid login
+        WebElement errorMessage = driver.findElement(By.xpath("//h3[@data-test='error']"));
+        String actualError = errorMessage.getText();
+        String expectedError = "Epic sadface: Username and password do not match any user in this service";
+        System.out.println("Actual error displayed: " + actualError);
+        System.out.println("Expected error displayed: " + expectedError);
+        if (actualError.equals(expectedError)) {
+            System.out.println("Validation works properly. TEST PASSED.");
+        } else {
+            System.out.println("Validation does not work properly. TEST FAILED.");
         }
     }
 
     @Then("I need to quit the browser.")
-    public void I_need_to_quit_the_browser(){
-        String expected = "Swag Labs";
-        String actual = driver.getTitle();
-        System.out.println("Expected:" +expected);
-        System.out.println("Actual:" +actual);
-        if (expected.equals(actual)){
-            System.out.println("I have redirected to the listing page");
-            System.out.println("The bowser is closed");
+    public void I_need_to_quit_the_browser() {
+        // Quit the browser
+        if (driver != null) {
             driver.quit();
-        }else {
-            System.out.println("ISSUE IS THERE");
-            System.out.println("I have not redirected to the listing page");
+            System.out.println("The browser is closed.");
+        } else {
+            System.out.println("Driver is null, no browser to close.");
         }
-
     }
-
-
 }
