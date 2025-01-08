@@ -51,5 +51,22 @@ public class LoginSD {
         }
     }
 
+    @Then("I need to quit the browser.")
+    public void I_need_to_quit_the_browser(){
+        String expected = "Swag Labs";
+        String actual = driver.getTitle();
+        System.out.println("Expected:" +expected);
+        System.out.println("Actual:" +actual);
+        if (expected.equals(actual)){
+            System.out.println("I have redirected to the listing page");
+            System.out.println("The bowser is closed");
+            driver.quit();
+        }else {
+            System.out.println("ISSUE IS THERE");
+            System.out.println("I have not redirected to the listing page");
+        }
+
+    }
+
 
 }

@@ -4,3 +4,4 @@ Feature: All login Scenarios
     When I enter correct username and password.
     And I click the login button
     Then I should be redirected to the listing page.
+    Then I need to quit the browser.
