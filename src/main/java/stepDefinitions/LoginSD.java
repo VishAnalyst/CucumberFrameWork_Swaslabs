@@ -51,6 +51,24 @@ public class LoginSD {
         System.out.println("BLANK username and password");
     }
 
+    @When ("I keep valid username and password blank.")
+    public void I_keep_valid_username_and_password_blank(){
+        WebElement username = driver.findElement(By.xpath("//input[@id='user-name']"));
+        username.sendKeys("standard_user");
+        WebElement password = driver.findElement(By.xpath("//input[@id='password']"));
+        password.sendKeys("");
+        System.out.println("Valid username and blank password");
+    }
+
+    @When("I keep blank username and valid password.")
+    public void I_keep_blank_username_and_valid_password(){
+        WebElement username = driver.findElement(By.xpath("//input[@id='user-name']"));
+        username.sendKeys("");
+        WebElement password = driver.findElement(By.xpath("//input[@id='password']"));
+        password.sendKeys("secret_sauce");
+        System.out.println("Valid password and blank username");
+    }
+
     @And("I click the login button.")
     public void I_click_login_button() {
         // Click the login button
@@ -101,6 +119,35 @@ public class LoginSD {
             System.out.println("The TEST IS FAILED");
         }
     }
+
+    @Then("Field Validation Should be shown for password.")
+    public void Field_Validation_Should_be_shown_for_password(){
+        WebElement errorMessage = driver.findElement(By.xpath("//h3[normalize-space()='Epic sadface: Password is required']"));
+        String actualErrorDisplayed = errorMessage.getText();
+        String expectedErrorDisplayed = "Epic sadface: Password is required";
+        System.out.println("The ACTUAL ERROR IS DISPLAYED AS:" + actualErrorDisplayed);
+        System.out.println("The EXPECTED ERROR IS DISPLAYED AS:" + expectedErrorDisplayed);
+        if(actualErrorDisplayed.equals(expectedErrorDisplayed)){
+             System.out.println("THE TEST PASSED, User blocked entry via field validation");
+        }else{
+            System.out.println("THE TEST FAILED, User blocked entry via field validation");
+        }
+    }
+
+    @Then("Field Validation Should be shown for username.")
+    public void Field_Validation_Should_be_shown_for_username(){
+        WebElement errorMessage = driver.findElement(By.xpath("//h3[normalize-space()='Epic sadface: Username is required']"));
+        String actualError = errorMessage.getText();
+        String expectedError = "Epic sadface: Username is required";
+        System.out.println("Actual error is displayed as:"+actualError);
+        System.out.println("Expected error is displayed as: "+ expectedError);
+        if(actualError.equals(expectedError)){
+            System.out.println("TEST PASSED user blocked the entry");
+        }else{
+            System.out.println("TEST FAILED ");
+        }
+    }
+
     @Then("I need to quit the browser.")
     public void I_need_to_quit_the_browser() {
         // Quit the browser

@@ -21,3 +21,17 @@ Feature: All login Scenarios
     And I click the login button.
     Then Field Validation Should be shown blocks user entry.
     And I need to quit the browser.
+
+  Scenario: To check the login scenario with valid username only.
+    Given I am on the login page.
+    When I keep valid username and password blank.
+    And I click the login button.
+    Then Field Validation Should be shown for password.
+    And I need to quit the browser.
+
+  Scenario: To check the login scenario with valid username only.
+    Given I am on the login page.
+    When I keep blank username and valid password.
+    And I click the login button.
+    Then Field Validation Should be shown for username.
+    And I need to quit the browser.
