@@ -14,3 +14,10 @@ Feature: All login Scenarios
     And I click the login button.
     Then I should not be redirected to the listing page.
     And I need to quit the browser.
+
+  Scenario: To check the login scenario with Blank credentials.
+    Given I am on the login page.
+    When I keep username and password blank.
+    And I click the login button.
+    Then Field Validation Should be shown blocks user entry.
+    And I need to quit the browser.

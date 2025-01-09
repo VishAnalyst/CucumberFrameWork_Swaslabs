@@ -42,6 +42,15 @@ public class LoginSD {
         System.out.println("Incorrect username and password are entered.");
     }
 
+    @When ("I keep username and password blank.")
+    public void I_keep_username_and_password_blank(){
+        WebElement username = driver.findElement(By.xpath("//input[@id='user-name']"));
+        username.sendKeys("");
+        WebElement password = driver.findElement(By.xpath("//input[@id='password']"));
+        password.sendKeys("");
+        System.out.println("BLANK username and password");
+    }
+
     @And("I click the login button.")
     public void I_click_login_button() {
         // Click the login button
@@ -79,6 +88,19 @@ public class LoginSD {
         }
     }
 
+    @Then("Field Validation Should be shown blocks user entry.")
+    public void Field_Validation_Should_be_shown_blocks_user_entry (){
+        WebElement errorMessage = driver.findElement(By.xpath("//h3[normalize-space()='Epic sadface: Username is required']"));
+        String actualError = errorMessage.getText();
+        String expectedError = "Epic sadface: Username is required";
+        System.out.println("The ACTUAL ERROR DISPLAYED AS"+actualError );
+        System.out.println("The ACTUAL ERROR DISPLAYED AS"+expectedError );
+        if(actualError.equals(expectedError)){
+            System.out.println("THE TEST IS PASSED, User blocked via field validation");
+        }else{
+            System.out.println("The TEST IS FAILED");
+        }
+    }
     @Then("I need to quit the browser.")
     public void I_need_to_quit_the_browser() {
         // Quit the browser
