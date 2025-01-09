@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.List;
+
 public class listingSD {
     WebDriver driver;
     @Given("I am on the login page")
@@ -58,6 +60,18 @@ public class listingSD {
         System.out.println("The one ADD TO CART BUTTON IS CLICKED");
     }
 
+    @When("I click the Add to Cart button for all the item")
+    public void i_click_the_add_to_cart_button_for_all_the_item() {
+        // Locate all Add to Cart buttons so here we used list to list all and filter using starts with
+        List<WebElement> addToCartButtons = driver.findElements(By.xpath("//button[starts-with(@id, 'add-to-cart-')]"));
+
+        // Loop through each button and perform the click action
+        for (WebElement button : addToCartButtons) {
+            button.click();
+        }
+        System.out.println("Clicked Add to Cart button for all items.");
+    }
+
     @And("Remove should be displayed on the clicked button")
     public void Remove_should_be_displayed_on_the_clicked_button(){
         WebElement removeTag = driver.findElement(By.xpath("//button[@id='remove-sauce-labs-backpack']"));
@@ -71,11 +85,45 @@ public class listingSD {
 
     }
 
+    @And("Remove should be displayed on all the clicked button")
+    public void Remove_should_be_displayed_on_all_the_clicked_button(){
+        List<WebElement> removeButtons = driver.findElements(By.xpath("//button[starts-with(@id, 'remove-')]"));
+        // Ensure all Remove buttons are displayed
+        boolean allDisplayed = true;
+        for (WebElement button : removeButtons) {
+            if (!button.isDisplayed()) {
+                allDisplayed = false;
+                System.out.println("A Remove button is not displayed.");
+                break;
+            }
+        }
+
+        if (allDisplayed) {
+            System.out.println("All Remove buttons are displayed correctly.");
+        } else {
+            throw new AssertionError("Not all Remove buttons are displayed.");
+        }
+    }
+
     @Then("The cart count should reflect as one")
     public void the_cart_count_should_reflect_as_one() {
         WebElement addToCartBadge = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']"));
         String actualOutput = addToCartBadge.getText();
         String expectedOutput = "1";
+        // Compare the actual output with the expected output
+        if (actualOutput.equals(expectedOutput)) {
+            System.out.println("The cart count is updated as 1: TEST PASSED");
+        } else {
+            System.out.println("Expected cart count: " + expectedOutput + ", but got: " + actualOutput);
+            throw new AssertionError("The cart count did not update correctly: TEST FAILED");
+        }
+    }
+
+    @Then("The cart count should reflect as 6")
+    public void The_cart_count_should_reflect_as_6() {
+        WebElement addToCartBadge = driver.findElement(By.xpath("//span[@class='shopping_cart_badge']"));
+        String actualOutput = addToCartBadge.getText();
+        String expectedOutput = "6";
         // Compare the actual output with the expected output
         if (actualOutput.equals(expectedOutput)) {
             System.out.println("The cart count is updated as 1: TEST PASSED");
@@ -95,6 +143,8 @@ public class listingSD {
             System.out.println("Driver is null, no browser to close.");
         }
     }
+
+
 }
 
 
